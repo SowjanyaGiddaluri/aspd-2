@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Buttons and Content Cards</title>
+    <style>
+        .button-container {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%; 
+            margin-left: 10px;
+            width: 300px;
+            z-index: 1000;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        .bg-testi-image {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            margin: 5px;
+            object-fit: cover;
+        }
+
+        .info-card {
+            padding: 10px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f7f7f7;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .card-content img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Example Buttons and Content -->
+<div class="button-container">
+    <div onclick="toggleContent(1)">
+        <img src="images/testi/image-1.jpg" class="bg-testi-image" alt="Image 1" />
+        <h4>Click Me 1</h4>
+    </div>
+    <div id="content-1" class="content"></div>
+</div>
+
+<div class="button-container">
+    <div onclick="toggleContent(2)">
+        <img src="images/testi/image-2.jpg" class="bg-testi-image" alt="Image 2" />
+        <h4>Click Me 2</h4>
+    </div>
+    <div id="content-2" class="content"></div>
+</div>
+
+<!-- Repeat similar structures for buttons up to 23 -->
+<!-- For example:
+<div class="button-container">
+    <button onclick="toggleContent(3)">
+        <img src="images/testi/image-3.jpg" class="bg-testi-image" alt="Image 3" />
+        <h4>Click Me 3</h4>
+    </button>
+    <div id="content-3" class="content"></div>
+</div>
+... up to 23 -->
+
+<script>
+    // Track the last opened content div
+    let lastOpenedContent = null;
+
+    function toggleContent(buttonId) {
+        const contentDiv = document.getElementById(`content-${buttonId}`);
+        
+        // Close the previously opened content if it exists and is not the current one
+        if (lastOpenedContent && lastOpenedContent !== contentDiv) {
+            lastOpenedContent.style.display = 'none';
+            lastOpenedContent.innerHTML = '';
+        }
+
+        // Toggle the display of the current content div
+        if (contentDiv.style.display === 'none' || contentDiv.innerHTML === '') {
+            contentDiv.style.display = 'block';
+
+            // Set the content (unique for each button if needed)
+            contentDiv.innerHTML = `
+                <div class="info-card">
+                    <div class="card-header">
+                        <p>Content for Button ${buttonId}</p>
+                        <button type="button" class="close-btn" onclick="closeCard(${buttonId})">&times;</button>
+                    </div>
+                    <div class="card-content">
+                        <img src="images/testi/gallery-0${buttonId}.jpeg" class="w-100" alt="Image for Button ${buttonId}" />
+                    </div>
+                </div>
+            `;
+
+            lastOpenedContent = contentDiv; // Update last opened content
+        } else {
+            contentDiv.style.display = 'none';
+            contentDiv.innerHTML = ''; 
+            lastOpenedContent = null; // Reset last opened content
+        }
+    }
+
+    function closeCard(buttonId) {
+        const contentDiv = document.getElementById(`content-${buttonId}`);
+        if (contentDiv) {
+            contentDiv.style.display = 'none';
+            contentDiv.innerHTML = ''; // Clear content on close
+            lastOpenedContent = null; // Reset last opened content
+        }
+    }
+</script>
+
+</body>
+</html>
